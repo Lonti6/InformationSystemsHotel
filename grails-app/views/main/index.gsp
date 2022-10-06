@@ -72,7 +72,7 @@
                             ${hotel.name}
                             <g:if test="${hotel.url != null}">
                                 <br>
-                                <a href="${hotel.getUrl()}">Перейти на сайт</a>
+                                <a href="${hotel.getUrl()}" target="_blank" rel="noopener" data-wpel-link="internal">Перейти на сайт</a>
                             </g:if>
                         </td>
                         <td>
