@@ -8,14 +8,12 @@ class MainController{
     def index() {
         //ищем страну, которая указана в поиске
         Country currentCountry = Country.all.find { it.name == params.selectCountry }
+
         int countHotels;
-
-        //делаем выборку в зависимости от поиска
         List<Hotel> hots;
-        println( (params.hotelName != null)? params.hotelName.isEmpty():"null")
-        println(params.toString())
-
         def searchParam = params.hotelName == null ? "":params.hotelName
+
+        log.info(params.toString())
 
         //если указана страна, ищем по стране и тексту поиска
         if (currentCountry != null) {
@@ -43,7 +41,7 @@ class MainController{
             )
         }
 
-        println(hots.toString())
+        log.info("Выбраны отели: "+String.join(", ", hots))
 
         [
                 hotels   : hots,//пердаём на представление найденные отели
@@ -57,8 +55,9 @@ class MainController{
 
     @Transactional
     def delHotel(){
-        Hotel.findByName(params.hotelDelete).delete(flush: true)//удаляем запись из БД
 
+        Hotel.findByName(params.hotelDelete).delete(flush: true)//удаляем запись из БД
+        log.info("Удалён отель с именем ${params.hotelDelete}")
         redirect(url: "/addHotel")//перенаправляем
     }
 
@@ -80,6 +79,7 @@ class MainController{
             //если такой отеля в такой стране не найдено, то добавляем
             if (h == null)
                 new Hotel(name: hotelName.trim(), country: country, stars: stars, url: params.urlHotel).save(flush:true)
+            log.info("Создан отель с именем: ${params.hotelName}")
         }
         redirect(url: "/addHotel")
     }
@@ -115,7 +115,7 @@ class MainController{
                     hotel.url = params.urlHotel
                     hotel.save(flush: true)
                 }
-
+            log.info("Изменён отель с именем: ${params.oldHotelName}")
         }
         redirect(url: "/addHotel")
     }
@@ -131,8 +131,10 @@ class MainController{
         def countryName = params.сountryName;
         def countryCapital = params.сountryCapital;
         //если имя и столица не наловые, то добавляем
-        if (countryName != null && countryCapital != null)
-            new Country(name: countryName.trim(), capital: countryCapital.trim()).save(flush:true)
+        if (countryName != null && countryCapital != null) {
+            new Country(name: countryName.trim(), capital: countryCapital.trim()).save(flush: true)
+            log.info("Создана страна с именем: ${params.сountryName}")
+        }
 
         redirect(url: "/addCountry")
     }
@@ -140,6 +142,7 @@ class MainController{
     @Transactional
     def delCountry(){
         Country.findByName(params.countryDelete).delete(flush: true)
+        log.info("Удалена страна с именем: ${params.countryDelete}")
         redirect(url: "/addCountry")
     }
 
@@ -161,6 +164,7 @@ class MainController{
             country.name = countryName.trim()
             country.capital = countryCapital.trim()
             country.save(flush:true)
+            log.info("Изменена страна с именем: ${params.oldCountryName}")
         }
         redirect(url: "/addCountry")
     }

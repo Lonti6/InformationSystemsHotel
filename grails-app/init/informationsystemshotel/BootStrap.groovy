@@ -14,6 +14,7 @@ class BootStrap {
     )
 
     def init = { servletContext ->
+        log.info("Началась стартовая генерация данных")
         countries.forEach((k, v) -> new Country(name: k, capital: v).save())
 
         String[] slogs = ["об", "на", "ва", "га", "те", "ту", "ку", "ке", "му", "ме", "ну", "не"]
@@ -32,7 +33,7 @@ class BootStrap {
                     url: random.nextBoolean() ? "https://github.com/": null
             ).save()
         }
-
+        log.info("Закончилась стартовая генерация данных")
         //hotels.forEach(x -> )
     }
     def destroy = {
