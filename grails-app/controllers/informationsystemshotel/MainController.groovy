@@ -12,43 +12,38 @@ class MainController{
 
         //делаем выборку в зависимости от поиска
         List<Hotel> hots;
-        //если указана страна и поиск по заголовку отеля
-        if (params.hotelName != null && currentCountry!=null) {
-            countHotels = Hotel.findAllByNameIlike("%${params.hotelName}%")
-                    .findAll(x -> x.country == currentCountry).size()//получаем количество отелей по запросу
-            hots = Hotel.findAllByNameIlike(//получаем сами отели
-                    "%${params.hotelName}%",//запрос
+        println( (params.hotelName != null)? params.hotelName.isEmpty():"null")
+        println(params.toString())
+
+        def searchParam = params.hotelName == null ? "":params.hotelName
+
+        //если указана страна, ищем по стране и тексту поиска
+        if (currentCountry != null) {
+            countHotels = Hotel.findAllByCountryAndNameIlike(currentCountry, "%${searchParam}%").size()
+            hots = Hotel.findAllByCountryAndNameIlike(
+                    currentCountry,
+                    "%${searchParam}%",
                     [
-                            sort: [stars: "desc", name: "asc"],//параметры сортировки
-                            max:postOnPage,//количество для получения
-                            offset: params.offset//место с которого получать отели
-                    ]
-            )
-                    .findAll(x -> x.country == currentCountry)
-        }
-        //если поиск только по заголовку
-        else if (params.hotelName != null) {
-            countHotels = Hotel.findAllByNameIlike("%${params.hotelName}%").size()//получаем количество отелей по запросу
-            hots = Hotel.findAllByNameIlike(
-                    "%${params.hotelName}%",//запрос
-                    [
-                            sort: [stars: "desc", name: "asc"],//параметры сортировки
-                            max:postOnPage,//количество для получения
+                            sort  : [stars: "desc", name: "asc"],//параметры сортировки
+                            max   : postOnPage,//количество для получения
                             offset: params.offset//место с которого получать отели
                     ]
             )
         }
-        //параметры поиска не указаны
+        //если страна не указана, ищем только по тексту поиска
         else {
-            countHotels = Hotel.all.size()//получаем количество отелей по запросу
+            countHotels = Hotel.findAllByNameIlike("%${searchParam}%").size()
             hots = Hotel.findAllByNameIlike(
-                    "%",//запрос
-                    [sort: [stars: "desc", name: "asc"],//параметры сортировки
-                     max:postOnPage,//количество для получения
-                     offset: params.offset//место с которого получать отели
+                    "%${searchParam}%",
+                    [
+                            sort  : [stars: "desc", name: "asc"],//параметры сортировки
+                            max   : postOnPage,//количество для получения
+                            offset: params.offset//место с которого получать отели
                     ]
             )
         }
+
+        println(hots.toString())
 
         [
                 hotels   : hots,//пердаём на представление найденные отели
