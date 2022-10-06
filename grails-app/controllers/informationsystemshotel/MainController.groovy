@@ -1,44 +1,70 @@
 package informationsystemshotel
 
 import grails.gorm.transactions.Transactional
-import org.grails.datastore.mapping.query.Query
-import org.grails.datastore.mapping.query.api.Criteria
-import org.hibernate.HibernateException
-import org.hibernate.criterion.CriteriaQuery
-import org.hibernate.criterion.Order as CriterionOrder
 
 class MainController{
-
-    static allowedMethods = [searchHotels: 'POST']
+    static final int postOnPage = 10;
 
     def index() {
+        //ищем страну, которая указана в поиске
         Country currentCountry = Country.all.find { it.name == params.selectCountry }
+        int countHotels;
 
+        //делаем выборку в зависимости от поиска
         List<Hotel> hots;
-        if (params.hotelName != null && currentCountry!=null)
-            hots = Hotel.findAllByNameIlike("%${params.hotelName}%", [sort:[stars:"desc", name:"asc"]])
+        //если указана страна и поиск по заголовку отеля
+        if (params.hotelName != null && currentCountry!=null) {
+            countHotels = Hotel.findAllByNameIlike("%${params.hotelName}%")
+                    .findAll(x -> x.country == currentCountry).size()//получаем количество отелей по запросу
+            hots = Hotel.findAllByNameIlike(//получаем сами отели
+                    "%${params.hotelName}%",//запрос
+                    [
+                            sort: [stars: "desc", name: "asc"],//параметры сортировки
+                            max:postOnPage,//количество для получения
+                            offset: params.offset//место с которого получать отели
+                    ]
+            )
                     .findAll(x -> x.country == currentCountry)
-        else if (params.hotelName != null)
-            hots = Hotel.findAllByNameIlike("%${params.hotelName}%", [sort:[stars:"desc", name:"asc"]])
-        else
-            hots = Hotel.findAllByNameIlike("%",[sort:[stars:"desc", name:"asc"]])
-
-
-        println(hots.toString())
+        }
+        //если поиск только по заголовку
+        else if (params.hotelName != null) {
+            countHotels = Hotel.findAllByNameIlike("%${params.hotelName}%").size()//получаем количество отелей по запросу
+            hots = Hotel.findAllByNameIlike(
+                    "%${params.hotelName}%",//запрос
+                    [
+                            sort: [stars: "desc", name: "asc"],//параметры сортировки
+                            max:postOnPage,//количество для получения
+                            offset: params.offset//место с которого получать отели
+                    ]
+            )
+        }
+        //параметры поиска не указаны
+        else {
+            countHotels = Hotel.all.size()//получаем количество отелей по запросу
+            hots = Hotel.findAllByNameIlike(
+                    "%",//запрос
+                    [sort: [stars: "desc", name: "asc"],//параметры сортировки
+                     max:postOnPage,//количество для получения
+                     offset: params.offset//место с которого получать отели
+                    ]
+            )
+        }
 
         [
-                hotels   : hots,
-                countries: Country.all,
-                currentHot: params.hotelName,
-                hotelsSize: hots.size()
+                hotels   : hots,//пердаём на представление найденные отели
+                countries: Country.all,//пердаём на представление список стран из БД
+                currentCountry: currentCountry,//пердаём на представление текущую страну
+                currentHot: params.hotelName,//пердаём на представление текущий текст запроса отеля
+                hotelCount: countHotels,//пердаём на представление количество всего найденных записей
+                postOnPage: postOnPage//количество записей на странице
         ]
     }
 
     @Transactional
     def delHotel(){
-        Hotel.findByName(params.hotelDelete).delete(flush: true)
+        Hotel.findByName(params.hotelDelete).delete(flush: true)//удаляем запись из БД
 
-        redirect(url: "/addHotel")
+        redirect(url: "/addHotel")//перенаправляем
     }
 
     def addHotel(){
@@ -52,9 +78,13 @@ class MainController{
     def createHotel(){
         def hotelName = params.hotelName;
         def stars = params.stars;
+        //если имя и количество звёзд не наловые, то создаём
         if (hotelName != null && stars != null){
             Country country = Country.findByName(params.selectCountry)
-            new Hotel(name: hotelName, country: country, stars: stars, url: params.urlHotel).save()
+            def h =Hotel.findByNameAndCountry(hotelName.trim(), country)
+            //если такой отеля в такой стране не найдено, то добавляем
+            if (h == null)
+                new Hotel(name: hotelName.trim(), country: country, stars: stars, url: params.urlHotel).save(flush:true)
         }
         redirect(url: "/addHotel")
     }
@@ -77,15 +107,19 @@ class MainController{
     @Transactional
     def refactHotel(){
         def hotelName = params.hotelName;
-        int stars = ((params.stars.toString()).trim().toInteger());
+        int stars = Integer.parseInt(params.stars)
+        //если имя и количество звёзд не наловые, то изменяем
         if (hotelName != null && stars != null){
             Country country = Country.findByName(params.selectCountry)
-            def hotel = Hotel.findByName(params.oldHotelName)
-            hotel.name = hotelName;
-            hotel.stars = ((int)stars);
-            hotel.country = country;
-            hotel.url = params.urlHotel
-            hotel.save(flush:true, failOnError:true);
+            def h =Hotel.findByNameAndCountry(hotelName.trim(), country)
+                if (h == null) {
+                    def hotel = Hotel.findByName(params.oldHotelName)
+                    hotel.name = hotelName.trim();
+                    hotel.stars = ((int) stars);
+                    hotel.country = country;
+                    hotel.url = params.urlHotel
+                    hotel.save(flush: true)
+                }
 
         }
         redirect(url: "/addHotel")
@@ -101,8 +135,9 @@ class MainController{
     def createCountry(){
         def countryName = params.сountryName;
         def countryCapital = params.сountryCapital;
+        //если имя и столица не наловые, то добавляем
         if (countryName != null && countryCapital != null)
-            new Country(name: countryName, capital: countryCapital).save()
+            new Country(name: countryName.trim(), capital: countryCapital.trim()).save(flush:true)
 
         redirect(url: "/addCountry")
     }
@@ -122,15 +157,15 @@ class MainController{
     }
     @Transactional
     def refactCountry(){
-        def countryName = params.сountryName.toString();
-        def oldCountryName = params.oldCountryName.toString();
-        def countryCapital = params.сountryCapital.toString();
+        def countryName = params.сountryName
+        def oldCountryName = params.oldCountryName.toString().trim()
+        def countryCapital = params.сountryCapital
 
         if (countryName != null && countryCapital != null){
             def country = Country.findByName(oldCountryName);
-            country.setName(countryName)
-            country.capital = countryCapital
-            country.save(flush:true, failOnError:true)
+            country.name = countryName.trim()
+            country.capital = countryCapital.trim()
+            country.save(flush:true)
         }
         redirect(url: "/addCountry")
     }

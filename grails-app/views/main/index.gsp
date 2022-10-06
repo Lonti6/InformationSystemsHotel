@@ -2,14 +2,15 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Welcome to Grails</title>
+    <title>Отели</title>
     <asset:stylesheet src="styleOfTable.css"/>
 </head>
 
 <body>
 <content tag="nav">
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Редактирование БД <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">Редактирование БД <span class="caret"></span></a>
         <ul class="dropdown-menu">
             <li class="dropdown-item"><a href="/addCountry">Добавить страну</a></li>
             <li class="dropdown-item"><a href="/addHotel">Добавить отель</a></li>
@@ -56,43 +57,51 @@
 
             <br>
 
-            <g:if test="${hotelsSize > 0}">
-            <table class="html-4">
-                <thead>
-                <tr>
-                    <td>Наименование</td>
-                    <td>Звёздность</td>
-                </tr>
-                </thead>
-                <tbody>
-                <% hotels.each { hotel -> %>
-                <tr>
-                    <td>
-                        ${hotel.name}
-                        <g:if test="${hotel.url != null}">
-                            <br>
-                            <a href="${hotel.getUrl()}">Перейти на сайт</a>
-                        </g:if>
-                    </td>
-                    <td>
-                        <g:each in="${(1..hotel.stars).toList()}" var="i">
-                            ★
-                        </g:each>
-                    </td>
-                </tr>
-                <% } %>
-                <tr>
-                    <td></td>
-                    <td>Всего записей: ${hotelsSize}</td>
-                </tr>
-                </tbody>
-            </table>
+            <g:if test="${hotelCount > 0}">
+                <table class="html-4">
+                    <thead>
+                    <tr>
+                        <td>Наименование</td>
+                        <td>Звёздность</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% hotels.each { hotel -> %>
+                    <tr>
+                        <td>
+                            ${hotel.name}
+                            <g:if test="${hotel.url != null}">
+                                <br>
+                                <a href="${hotel.getUrl()}">Перейти на сайт</a>
+                            </g:if>
+                        </td>
+                        <td>
+                            <g:each in="${(1..hotel.stars).toList()}" var="i">
+                                ★
+                            </g:each>
+                        </td>
+                    </tr>
+                    <% } %>
+                    <tr>
+                        <td></td>
+                        <td>Всего записей: ${hotelCount}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <g:paginate controller="main"
+                            action="index"
+                            total="${hotelCount}"
+                            max="${postOnPage}"
+                            params="[selectCountry: (currentCountry != null)?currentCountry.getName():'Все', hotelName: currentHot]"/>
             </g:if>
             <g:else>
                 <h1>Мы ничего не нашли(</h1>
-                <asset:image src="goose.webp" class="grails-logo" style="horiz-align: center; width: 350px; margin-left: auto; margin-right: auto;"/>
+                <asset:image src="goose.webp" class="grails-logo"
+                             style="horiz-align: center; width: 350px; margin-left: auto; margin-right: auto;"/>
 
             </g:else>
+
         </section>
     </div>
 </div>

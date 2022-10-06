@@ -34,6 +34,7 @@
             <tr>
                 <td>Наименование</td>
                 <td>Звёздность</td>
+                <td>Страна</td>
                 <td>Действия</td>
             </tr>
             </thead>
@@ -51,6 +52,9 @@
                     <g:each in="${(1..hotel.stars).toList()}" var="i">
                         ★
                     </g:each>
+                </td>
+                <td>
+                    ${hotel.country.name}
                 </td>
                 <td>
                     <form method="post" action="/delHotel" style="margin-bottom: 10px">
