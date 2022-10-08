@@ -1,25 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Добавление страны</title>
+    <meta name="layout" content="main"/>
+    <title>Страны</title>
     <asset:stylesheet src="styleOfTable.css"/>
 </head>
 <body>
 <div id="content" role="main">
     <div class="container">
-        <h1>Добавление страны</h1>
-        <br>
-
-        <form method="post" action="/addCountry">
-            <br>
-            <label for="h1" id="lab1">Наименование</label>
-            <input type="text" name="сountryName" alt="Название страны" id="h1" style="margin-bottom: 10px">
-            <br>
-            <label for="h2" id="lab2">Столица</label>
-            <input type="text" name="сountryCapital" alt="Столица" id="h2" max="5" min="1" style="margin-bottom: 10px">
-            <button type="submit">Добавить</button>
-        </form>
-
         <table class="html-4">
             <thead>
             <tr>
@@ -51,6 +39,12 @@
             <% } %>
             </tbody>
         </table>
+
+        <g:paginate controller="country"
+                    action="index"
+                    total="${countryCount}"
+                    max="${max}"/>
+
     </div>
 </div>
 </body>

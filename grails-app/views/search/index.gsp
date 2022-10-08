@@ -8,11 +8,19 @@
 
 <body>
 <content tag="nav">
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-           aria-expanded="false">Редактирование БД <span class="caret"></span></a>
+    <li class="dropdown" style="margin-right: 20px">
+        <p style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">Страны <span class="caret"></span></p>
         <ul class="dropdown-menu">
+            <li class="dropdown-item"><a href="/countries">Список стран</a></li>
             <li class="dropdown-item"><a href="/addCountry">Добавить страну</a></li>
+        </ul>
+    </li>
+    <li class="dropdown" style="margin-right: 100px">
+        <p style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">Отели <span class="caret"></span></p>
+        <ul class="dropdown-menu">
+            <li class="dropdown-item"><a href="/countries">Список отелей</a></li>
             <li class="dropdown-item"><a href="/addHotel">Добавить отель</a></li>
         </ul>
     </li>

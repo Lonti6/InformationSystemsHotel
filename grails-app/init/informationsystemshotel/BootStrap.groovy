@@ -4,16 +4,22 @@ import grails.gorm.transactions.Transactional
 
 
 class BootStrap {
-    Map<String, String> countries = Map.of(
-            "Россия", "Москва",
-            "Белоруссия", "Минск",
-            "Казахстан", "Астана",
-            "Германия", "Берлин",
-            "Куба", "Гавана",
-            "Китай", "Пекин"
-    )
+    Map<String, String> countries = new HashMap<>();
 
     def init = { servletContext ->
+
+        countries.put("Россия", "Москва")
+        countries.put("Белоруссия", "Минск")
+        countries.put("Казахстан", "Астана")
+        countries.put("Германия", "Берлин")
+        countries.put("Куба", "Гавана")
+        countries.put("Узбекистан", "Ташкент")
+        countries.put("Бразилия", "Бразилиа")
+        countries.put("Монголия", "Улан-Батор")
+        countries.put("КНДР", "Пхеньян")
+        countries.put("Китай", "Пекин")
+        countries.put("Великобритания", "Лондон")
+
         log.info("Началась стартовая генерация данных")
         countries.forEach((k, v) -> new Country(name: k, capital: v).save())
 

@@ -9,17 +9,21 @@ class UrlMappings {
             }
         }
 
-        "/"(view:"/main/index", controller: "Main")
-        post "/delHotel" (controller: "Main", action: "delHotel")
-        "/addHotel"(view:"/main/addHotel", controller: "Main", action: "addHotel")
-        post "/addHotel"(controller: "Main", action: "createHotel")
-        "/refactorHotel"(view:"/main/refactorHotel", controller: "Main", action: "refactorHotel")
-        post "/refactorHotel"(controller: "Main", action: "refactHotel")
-         "/addCountry"(controller: "Main", action: "addCountry")
-         post "/addCountry"(controller: "Main", action: "createCountry")
-         post "/delCountry"(controller: "Main", action: "delCountry")
-         "/refactorCountry"(controller: "Main", action: "refactorCountry")
-         post "/refactorCountry"(controller: "Main", action: "refactCountry")
+        "/"(view:"/search/index", controller: "Search")
+
+        post "/delHotel" (controller: "Hotel", action: "delHotel")
+        "/showHotel"(view:"/hotel/index", controller: "Hotel", action: "index")
+        post "/addHotel"(controller: "Hotel", action: "createHotel")
+        "/refactorHotel"(view:"/hotel/refactorHotel", controller: "Hotel", action: "refactorHotel")
+        post "/refactorHotel"(controller: "Hotel", action: "refactHotel")
+
+         "/countries"(controller: "Country", action: "index")
+         post "/createCountry"(controller: "Country", action: "createCountry")
+         "/addCountry"(controller: "Country", action: "creatingCountry")
+         post "/delCountry"(controller: "Country", action: "delCountry")
+         "/refactorCountry"(controller: "Country", action: "refactorCountry")
+         post "/refactorCountry"(controller: "Country", action: "refactCountry")
+
         "500"(view:'/error')
         "404"(view:'/notFound')
     }

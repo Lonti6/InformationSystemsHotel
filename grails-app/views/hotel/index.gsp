@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<!doctype html>
+<html lang="ru" class="no-js">
 <head>
-    <title>Добавление отеля</title>
+    <meta name="layout" content="main"/>
+    <title>Отели</title>
     <asset:stylesheet src="styleOfTable.css"/>
 </head>
 
@@ -19,10 +21,10 @@
             </select>
             <br>
             <label for="h1" id="lab1">Наименование</label>
-            <input type="text" name="hotelName" alt="Название отеля" id="h1" style="margin-bottom: 10px">
+            <input type="text" name="hotelName" alt="Название отеля" id="h1" style="margin-bottom: 10px" required>
             <br>
             <label for="h2" id="lab2">Звёздность</label>
-            <input type="number" name="stars" alt="Звёздность" id="h2" max="5" min="1" style="margin-bottom: 10px">
+            <input type="number" name="stars" alt="Звёздность" id="h2" max="5" min="1" style="margin-bottom: 10px" required>
             <br>
             <label for="h3" id="lab3">Ссылка</label>
             <input type="url" name="urlHotel" alt="Ссылка на сайт" id="h3" style="margin-bottom: 10px">

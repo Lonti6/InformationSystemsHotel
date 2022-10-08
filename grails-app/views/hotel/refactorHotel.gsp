@@ -1,14 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Nikita
-  Date: 05.10.2022
-  Time: 23:23
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Редактирование</title>
+    <meta name="layout" content="main"/>
+    <title>Редактирование отеля</title>
 </head>
 
 <body>
