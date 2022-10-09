@@ -31,13 +31,15 @@
                         </td>
                         <td>
                             <form method="post" action="/delCountry" style="margin-bottom: 10px">
-                                <button style="width: 120px" name="countryDelete" value="${country.name}" type="submit">Удалить</button>
+                                <button style="width: 120px" name="countryDelete" value="${country.name}"
+                                        type="submit">Удалить</button>
                             </form>
 
-                            <form action="/addCountry">
-                                <button style="width: 120px" name="countryName" value="${country.name}" type="submit">Редактировать</button>
-                            </a>
-                            </form>
+                            <g:form method="post" url="[controller: 'country', action: 'updateView']">
+                                <button style="width: 120px" name="id" value="${country.id}"
+                                        type="submit">Редактировать</button>
+                                </a>
+                            </g:form>
                         </td>
                     </tr>
                     <% } %>

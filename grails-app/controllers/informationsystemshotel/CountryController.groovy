@@ -7,6 +7,7 @@ class CountryController {
 
     CountryService countryService
 
+    //список стран
     def index() {
         def countries = countryService.getCountriesOffset(postOnPage, ((params.offset == null?0:params.offset).toInteger()))
         [
@@ -17,28 +18,18 @@ class CountryController {
         ]
     }
 
+    //сохранение/изменение страны
     @Transactional
-    def createCountry() {
-        def countryName = params.сountryName.trim();
-        def countryCapital = params.сountryCapital.trim();
-
-        if (params.oldCountryName != null){
-            println("fdsfsfds")
-            redirect(action: "refactCountry", params: params)
-            return
+    def save(Country country){
+        if (!country.save(flush: true)){
+            flash.message = "Ошибка"
+            return render(view: "creatingCountry", model: [country: country])
         }
-
-        //если имя и столица не наловые, то добавляем
-        if (countryService.findCountryByName(countryName) == null) {
-            countryService.saveCountry(countryName, countryCapital)
-            log.info("Создана страна с именем: ${params.сountryName}")
-            redirect(action: "index")
-        } else {
-            println("Fdfsfadsfs")
-            redirect(action: "creatingCountry", params: ["errorText": "Страна с таким именем уже существует!"])
-        }
+        flash.message = "Успешно"
+        redirect(controller: "country", action: "index")
     }
 
+    //удаление страны
     @Transactional
     def delCountry() {
         countryService.deleteCountryByName(params.countryDelete);
@@ -46,43 +37,13 @@ class CountryController {
         redirect(action: "index")
     }
 
-    @Transactional
-    def refactCountry() {
-        def сountryName = params.сountryName.trim()
-        def oldCountryName = params.oldCountryName.trim()
-        def countryCapital = params.сountryCapital.trim()
-
-        Country currentCountry = countryService.findCountryByName(сountryName)
-        Country oldCountry = countryService.findCountryByName(oldCountryName)
-
-        if (currentCountry == null){
-            countryService.changeCountryData(
-                    oldCountry,
-                    сountryName,
-                    countryCapital
-            )
-            redirect(action: "index")
-        }
-        else {
-            redirect(action: "creatingCountry", params: ["errorText": "Страна с таким именем уже существует!", "countryName":oldCountryName])
-        }
-
-
+    //при создании с нуля
+    def createView(){
+        render(view: "creatingCountry", model: [country: new Country()])
     }
 
-    def creatingCountry(){
-        Country c;
-        String type = "Создать"
-        if (params.countryName != null) {
-            c = countryService.findCountryByName(params.countryName)
-            type = "Изменить"
-        }
-        [
-                errorText: params.errorText,
-                countryName: c == null? null: c.name,
-                countryCapital: c== null? null: c.capital,
-                actionType: type,
-                errorText: params.errorText
-        ]
+    //при редактировании
+    def updateView(Long id){
+        render(view: "creatingCountry", model: [country: countryService.findCountryById(id)])
     }
 }

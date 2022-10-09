@@ -41,13 +41,15 @@
                     </td>
                     <td>
                         <form method="post" action="/delHotel" style="margin-bottom: 10px">
-                            <button style="width: 120px" name="hotelDelete" value="${hotel.getId()}" type="submit">Удалить</button>
+                            <button style="width: 120px" name="hotelDelete" value="${hotel.getId()}</>"
+                                    type="submit">Удалить</button>
                         </form>
 
-                        <form action="/addHotel">
-                            <button style="width: 120px" name="hotelId" value="${hotel.getId()}" type="submit">Редактировать</button>
-                        </a>
-                        </form>
+
+                        <g:form method="post" url="[controller: 'hotel', action: 'updateView']">
+                            <button style="width: 120px" name="id" value="${hotel.id}"
+                                    type="submit">Редактировать</button>
+                        </g:form>
                     </td>
                 </tr>
                 <% } %>

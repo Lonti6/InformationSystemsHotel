@@ -4,36 +4,35 @@ import grails.gorm.transactions.Transactional
 
 class CountryService {
 
+    //поиск страны по id
+    def findCountryById(long id){
+        Country.createCriteria().get {
+            eq("id", id)
+        }
+    }
+
+    //получение всех стран
     def getAllCountries() {
         Country.all
     }
 
+    //получение стран с оффсетом
     def getCountriesOffset(int maxOnPage, int offset) {
         Country.createCriteria().list(max: maxOnPage, offset: offset){
             order("name", "asc")
         }
     }
 
+    //поиск страны по имени
     def findCountryByName(String name){
         Country.createCriteria().get {
             ilike("name", name)
         }
     }
 
-    @Transactional
-    def saveCountry(String name, String capital){
-        new Country(name: name, capital:capital).save(flush: true)
-    }
-
+    //удаление страны по имени
     @Transactional
     def deleteCountryByName(String name){
         findCountryByName(name).delete(flush: true)
-    }
-
-    @Transactional
-    def changeCountryData(Country oldCountry, String newName, String newCapital){
-        oldCountry.name = newName
-        oldCountry.capital = newCapital
-        oldCountry.save(flush: true)
     }
 }
