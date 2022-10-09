@@ -36,8 +36,4 @@ class CountryService {
         oldCountry.capital = newCapital
         oldCountry.save(flush: true)
     }
-
-    def getCountAll(){
-        Country.all.size()
-    }
 }

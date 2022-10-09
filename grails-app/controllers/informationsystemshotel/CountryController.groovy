@@ -12,7 +12,7 @@ class CountryController {
         [
                 countries: countries,
                 max: postOnPage,
-                countryCount: countryService.getCountAll(),
+                countryCount: countries.getTotalCount(),
                 offset: params.offset
         ]
     }
@@ -21,6 +21,12 @@ class CountryController {
     def createCountry() {
         def countryName = params.сountryName.trim();
         def countryCapital = params.сountryCapital.trim();
+
+        if (params.oldCountryName != null){
+            println("fdsfsfds")
+            redirect(action: "refactCountry", params: params)
+            return
+        }
 
         //если имя и столица не наловые, то добавляем
         if (countryService.findCountryByName(countryName) == null) {
@@ -40,15 +46,6 @@ class CountryController {
         redirect(action: "index")
     }
 
-    def refactorCountry() {
-        Country country = countryService.findCountryByName(params.countryName);
-        [
-                countryName   : country.name,
-                countryCapital: country.capital,
-                errorText     : params.errorText
-        ]
-    }
-
     @Transactional
     def refactCountry() {
         def сountryName = params.сountryName.trim()
@@ -58,7 +55,7 @@ class CountryController {
         Country currentCountry = countryService.findCountryByName(сountryName)
         Country oldCountry = countryService.findCountryByName(oldCountryName)
 
-        if (currentCountry == null || (currentCountry != null && currentCountry.name == oldCountryName)){
+        if (currentCountry == null){
             countryService.changeCountryData(
                     oldCountry,
                     сountryName,
@@ -67,13 +64,25 @@ class CountryController {
             redirect(action: "index")
         }
         else {
-            redirect(action: "refactorCountry", params: ["errorText": "Страна с таким именем уже существует!", "countryName":oldCountryName])
+            redirect(action: "creatingCountry", params: ["errorText": "Страна с таким именем уже существует!", "countryName":oldCountryName])
         }
 
 
     }
 
     def creatingCountry(){
-        [errorText: params.errorText]
+        Country c;
+        String type = "Создать"
+        if (params.countryName != null) {
+            c = countryService.findCountryByName(params.countryName)
+            type = "Изменить"
+        }
+        [
+                errorText: params.errorText,
+                countryName: c == null? null: c.name,
+                countryCapital: c== null? null: c.capital,
+                actionType: type,
+                errorText: params.errorText
+        ]
     }
 }

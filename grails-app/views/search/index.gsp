@@ -20,7 +20,7 @@
         <p style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
            aria-expanded="false">Отели <span class="caret"></span></p>
         <ul class="dropdown-menu">
-            <li class="dropdown-item"><a href="/countries">Список отелей</a></li>
+            <li class="dropdown-item"><a href="/hotels">Список отелей</a></li>
             <li class="dropdown-item"><a href="/addHotel">Добавить отель</a></li>
         </ul>
     </li>
@@ -80,7 +80,8 @@
                             ${hotel.name}
                             <g:if test="${hotel.url != null}">
                                 <br>
-                                <a href="${hotel.getUrl()}" target="_blank" rel="noopener" data-wpel-link="internal">Перейти на сайт</a>
+                                <a href="${hotel.getUrl()}" target="_blank" rel="noopener"
+                                   data-wpel-link="internal">Перейти на сайт</a>
                             </g:if>
                         </td>
                         <td>
@@ -97,11 +98,14 @@
                     </tbody>
                 </table>
 
-                <g:paginate controller="main"
+                <div class="pagination">
+                    <g:paginate
+                            controller="search"
                             action="index"
                             total="${hotelCount}"
                             max="${postOnPage}"
-                            params="[selectCountry: (currentCountry != null)?currentCountry.getName():'Все', hotelName: currentHot]"/>
+                            params="[selectCountry: (currentCountry != null) ? currentCountry.getName() : 'Все', hotelName: currentHot]"/>
+                </div>
             </g:if>
             <g:else>
                 <h1>Мы ничего не нашли(</h1>

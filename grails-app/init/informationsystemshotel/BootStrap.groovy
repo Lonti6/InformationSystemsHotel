@@ -1,8 +1,5 @@
 package informationsystemshotel
 
-import grails.gorm.transactions.Transactional
-
-
 class BootStrap {
     Map<String, String> countries = new HashMap<>();
 
@@ -27,7 +24,7 @@ class BootStrap {
         def cs = Country.all;
         def random = new Random();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             new Hotel(
                     name: "" +
                             "${slogs[random.nextInt(slogs.length)]}" +
@@ -40,7 +37,6 @@ class BootStrap {
             ).save()
         }
         log.info("Закончилась стартовая генерация данных")
-        //hotels.forEach(x -> )
     }
     def destroy = {
     }
