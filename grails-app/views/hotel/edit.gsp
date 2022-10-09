@@ -13,11 +13,7 @@
         <h1>Добавление отеля</h1>
         <br>
 
-        <g:hasErrors bean="${hotel}" field="name">
-            <div class="errors">
-                <g:renderErrors bean="${hotel}" field="name" as="list" />
-            </div>
-        </g:hasErrors>
+        <h1 style="color: red">${flash.message}</h1>
 
         <g:form method="post" url="[controller: 'hotel', action: 'save']">
             <input name="id" value="${hotel?.id ?: ''}" type="hidden">

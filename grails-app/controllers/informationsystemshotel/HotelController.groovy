@@ -27,10 +27,10 @@ class HotelController {
         hotel.country = countryService.findCountryByName(params.countryName)
 
         if (!hotel.save(flush: true)){
-            flash.message = "Ошибка"
-            return render(view: "creatingHotel", model: [hotel: hotel, countries: countryService.allCountries])
+            flash.message = "Ошибка при создании отеля ${hotel.getName()} (такое имя занято)"
+            return render(view: "edit", model: [hotel: hotel, countries: countryService.allCountries])
         }
-        flash.message = "Успешно"
+        flash.message = "Успешное сохранение"
         redirect(controller: "hotel", action: "index")
     }
 
@@ -44,11 +44,11 @@ class HotelController {
 
     //при создании с нуля
     def createView(){
-        render(view: "creatingHotel", model: [hotel: new Hotel(), countries: countryService.allCountries])
+        render(view: "edit", model: [hotel: new Hotel(), countries: countryService.allCountries])
     }
 
     //при редактировании
     def updateView(Long id){
-        render(view: "creatingHotel", model: [hotel: hotelService.findHotelById(id), countries: countryService.allCountries])
+        render(view: "edit", model: [hotel: hotelService.findHotelById(id), countries: countryService.allCountries])
     }
 }

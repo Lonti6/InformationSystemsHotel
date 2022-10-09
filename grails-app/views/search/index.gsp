@@ -12,16 +12,24 @@
         <p style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
            aria-expanded="false">Страны <span class="caret"></span></p>
         <ul class="dropdown-menu">
-            <li class="dropdown-item"><a href="/countries">Список стран</a></li>
-            <li class="dropdown-item"><a href="/addCountry">Добавить страну</a></li>
+            <g:form controller="country" action="index">
+                <button type="submit">Список стран</button>
+            </g:form>
+            <g:form controller="country" action="createView">
+                <button type="submit">Добавить страну</button>
+            </g:form>
         </ul>
     </li>
     <li class="dropdown" style="margin-right: 100px">
         <p style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
            aria-expanded="false">Отели <span class="caret"></span></p>
         <ul class="dropdown-menu">
-            <li class="dropdown-item"><a href="/hotels">Список отелей</a></li>
-            <li class="dropdown-item"><a href="/addHotel">Добавить отель</a></li>
+            <g:form controller="hotel" action="index">
+                <button type="submit">Список отелей</button>
+            </g:form>
+            <g:form controller="hotel" action="createView">
+                <button type="submit">Создать отель</button>
+            </g:form>
         </ul>
     </li>
 </content>

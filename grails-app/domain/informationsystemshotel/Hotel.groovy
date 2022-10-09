@@ -18,7 +18,9 @@ class Hotel {
         }
         country nullable: false
         stars nullable: false, max: 5
-        url nullable: true, blank: true
+        url nullable: true, blank: true, validator: {
+            it?.startsWith("http://") || it?.startsWith("https://") || it == null ?: ['siteStarts']
+        }
     }
 
     static belongsTo = [country: Country]

@@ -22,10 +22,10 @@ class CountryController {
     @Transactional
     def save(Country country){
         if (!country.save(flush: true)){
-            flash.message = "Ошибка"
-            return render(view: "creatingCountry", model: [country: country])
+            flash.message = "Ошибка при создании страны ${country.getName()} (такое имя занято)"
+            return render(view: "edit", model: [country: country])
         }
-        flash.message = "Успешно"
+        flash.message = "Успешное сохранение"
         redirect(controller: "country", action: "index")
     }
 
@@ -39,11 +39,11 @@ class CountryController {
 
     //при создании с нуля
     def createView(){
-        render(view: "creatingCountry", model: [country: new Country()])
+        render(view: "edit", model: [country: new Country()])
     }
 
     //при редактировании
     def updateView(Long id){
-        render(view: "creatingCountry", model: [country: countryService.findCountryById(id)])
+        render(view: "edit", model: [country: countryService.findCountryById(id)])
     }
 }

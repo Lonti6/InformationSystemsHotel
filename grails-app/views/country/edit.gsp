@@ -12,11 +12,7 @@
         <h1>Добавление страны</h1>
         <br>
 
-        <g:hasErrors bean="${country}" field="name">
-            <div class="errors">
-                <g:renderErrors bean="${country}" field="name" as="list" />
-            </div>
-        </g:hasErrors>
+        <h1 style="color: red">${flash.message}</h1>
 
         <g:form method="post" url="[controller: 'country', action: 'save']">
             <input name="id" value="${country.id ?: ''}" type="hidden">
