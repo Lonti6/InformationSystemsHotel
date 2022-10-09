@@ -22,7 +22,7 @@
             <br>
             <label style="width: 100px" for="h2" id="lab2">Столица</label>
             <input value="${country.capital ?: ''}" type="text" name="capital"
-                   alt="Столица" id="h2" max="5" min="1" style="margin-bottom: 10px"
+                   alt="Столица" id="h2" style="margin-bottom: 10px"
                    required>
             <button style="margin-left: 20px" type="submit">Добавить</button>
         </g:form>

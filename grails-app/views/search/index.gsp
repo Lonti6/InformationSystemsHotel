@@ -13,10 +13,10 @@
            aria-expanded="false">Страны <span class="caret"></span></p>
         <ul class="dropdown-menu">
             <g:form controller="country" action="index">
-                <button type="submit">Список стран</button>
+                <button style="background: transparent; border: transparent; color: white;" type="submit">Список стран</button>
             </g:form>
-            <g:form controller="country" action="createView">
-                <button type="submit">Добавить страну</button>
+            <g:form controller="country" action="create">
+                <button style="background: transparent; border: transparent; color: white;" type="submit">Добавить страну</button>
             </g:form>
         </ul>
     </li>
@@ -25,10 +25,10 @@
            aria-expanded="false">Отели <span class="caret"></span></p>
         <ul class="dropdown-menu">
             <g:form controller="hotel" action="index">
-                <button type="submit">Список отелей</button>
+                <button style="background: transparent; border: transparent; color: white;" type="submit">Список отелей</button>
             </g:form>
-            <g:form controller="hotel" action="createView">
-                <button type="submit">Создать отель</button>
+            <g:form controller="hotel" action="create">
+                <button style="background: transparent; border: transparent; color: white;" type="submit">Создать отель</button>
             </g:form>
         </ul>
     </li>

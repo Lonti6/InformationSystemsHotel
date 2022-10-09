@@ -11,6 +11,9 @@
 <div id="content" role="main">
     <div class="container">
         <section class="row colset-2-its">
+            <h1>Список отелей</h1>
+
+            <h1>${flash.message}</h1>
 
             <table class="html-4">
                 <thead>
@@ -37,16 +40,16 @@
                         </g:each>
                     </td>
                     <td>
-                        ${hotel.country.name}
-                    </td>
+                        ${hotel.country.name}</>
+                </td>
                     <td>
-                        <form method="post" action="/delHotel" style="margin-bottom: 10px">
-                            <button style="width: 120px" name="hotelDelete" value="${hotel.getId()}</>"
+                        <g:form style="margin-bottom: 10px;" method="post" url="[controller: 'hotel', action: 'delHotel']">
+                            <button style="width: 120px" name="hotelDelete" value="${hotel.getId()}"
                                     type="submit">Удалить</button>
-                        </form>
+                        </g:form>
 
 
-                        <g:form method="post" url="[controller: 'hotel', action: 'updateView']">
+                        <g:form method="post" url="[controller: 'hotel', action: 'update']">
                             <button style="width: 120px" name="id" value="${hotel.id}"
                                     type="submit">Редактировать</button>
                         </g:form>

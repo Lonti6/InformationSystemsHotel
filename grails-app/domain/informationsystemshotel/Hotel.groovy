@@ -19,7 +19,7 @@ class Hotel {
         country nullable: false
         stars nullable: false, max: 5
         url nullable: true, blank: true, validator: {
-            it?.startsWith("http://") || it?.startsWith("https://") || it == null ?: ['siteStarts']
+            it.toString().indexOf("http://") == 0 || it.toString().indexOf("https://") == 0 || it == null ?: ["urlStarts"]
         }
     }
 

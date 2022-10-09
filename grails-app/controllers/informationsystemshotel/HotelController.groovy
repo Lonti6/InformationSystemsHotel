@@ -30,7 +30,7 @@ class HotelController {
             flash.message = "Ошибка при создании отеля ${hotel.getName()} (такое имя занято)"
             return render(view: "edit", model: [hotel: hotel, countries: countryService.allCountries])
         }
-        flash.message = "Успешное сохранение"
+        flash.message = "Успешное сохранение ${hotel.name}"
         redirect(controller: "hotel", action: "index")
     }
 
@@ -39,16 +39,17 @@ class HotelController {
     def delHotel() {
         hotelService.deleteHotelById(Long.parseLong(params.hotelDelete))
         log.info("Удалён отель с id ${params.hotelDelete}")
+        flash.message = "Успешное удаление отеля"
         redirect(action: "index")//перенаправляем
     }
 
     //при создании с нуля
-    def createView(){
+    def create(){
         render(view: "edit", model: [hotel: new Hotel(), countries: countryService.allCountries])
     }
 
     //при редактировании
-    def updateView(Long id){
+    def update(Long id){
         render(view: "edit", model: [hotel: hotelService.findHotelById(id), countries: countryService.allCountries])
     }
 }
